@@ -1,0 +1,46 @@
+#  ansible-glastopf
+
+### Installation of glastopf for raspberry pi
+
+[https://github.com/mushorg/glastopf](https://github.com/mushorg/glastopf)
+
+[github raspberry installation](https://github.com/mushorg/glastopf/blob/master/docs/source/installation/installation_raspberry.rst)
+
+
+Glastopf is a Python web application honeypot founded by Lukas Rist.
+
+### Install ansible
+
+Debian
+```
+sudo apt-get install ansible
+```
+
+Alternatively you can install ansible using pip.
+```
+sudo apt-get intsall python-pip
+sudo pip install ansible
+```
+
+### Update the inventory.ini file with the master and client IP addresses
+
+ex:
+```
+[pi]
+pi ansible_host=192.168.1.100 ansible_user=pi
+
+[debian]
+debian ansible_host=127.0.0.1 ansible_port=2222 ansible_user=root
+
+[aws]
+ec2 ansible_host={{ ec2_public_ip }} ansible_user=ubuntu ansible_python_interpreter=/usr/bin/python2.7
+```
+
+### Run ansible
+
+```
+ansible-playbook site.yml 
+ansible-playbook -l pi site.yml 
+ansible-playbook -l debian site.yml 
+ansible-playbook -l ec2 site.yml 
+```
