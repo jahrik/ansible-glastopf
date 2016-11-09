@@ -1,27 +1,20 @@
-##  ansible-glastopf
+#  ansible-glastopf
 
-Table of Contents
-=================
+## Table of Contents
 
-      * [ansible-glastopf](#ansible-glastopf)
-         * [Installation of glastopf for raspberry pi](#installation-of-glastopf-for-raspberry-pi)
-         * [Install ansible](#install-ansible)
-         * [Update the inventory.ini file with the master and client IP addresses](#update-the-inventoryini-file-with-the-master-and-client-ip-addresses)
-         * [Raspberry Pi](#raspberry-pi)
-         * [Vagrant lab](#vagrant-lab)
-
-### Installation of glastopf for raspberry pi
+   * [ansible-glastopf](#ansible-glastopf)
+      * [Install ansible](#install-ansible)
+      * [Update the inventory.ini file with the master and client IP addresses](#update-the-inventoryini-file-with-the-master-and-client-ip-addresses)
+      * [Raspberry Pi](#raspberry-pi)
+      * [Vagrant lab](#vagrant-lab)
 
 [https://github.com/mushorg/glastopf](https://github.com/mushorg/glastopf)
 
-[github raspberry installation](https://github.com/mushorg/glastopf/blob/master/docs/source/installation/installation_raspberry.rst)
-
-
 Glastopf is a Python web application honeypot founded by Lukas Rist.
 
-### Install ansible
+## Install ansible
 
-Debian
+Ubuntu
 ```
 sudo apt-get install ansible
 ```
@@ -32,7 +25,7 @@ sudo apt-get intsall python-pip
 sudo pip install ansible
 ```
 
-### Update the inventory.ini file with the master and client IP addresses
+## Update the inventory.ini file with the master and client IP addresses
 
 ex:
 ```
@@ -46,13 +39,14 @@ vagrant ansible_host=127.0.0.1 ansible_port=2222 ansible_user=root
 ec2 ansible_host={{ ec2_public_ip }} ansible_user=ubuntu ansible_python_interpreter=/usr/bin/python2.7
 ```
 
-### Raspberry Pi
+## Raspberry Pi
 
 ```
 ansible-playbook -l pi site.yml 
 ```
 
-### Vagrant lab
+## Vagrant lab
+
 ```
 vagrant up
 ansible-playbook -l vagrant site.yml 
