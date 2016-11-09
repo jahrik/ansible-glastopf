@@ -2,3 +2,4 @@
 *.swp
 inventory.ini
 ansible-deployer.pem
+gh-md-toc
