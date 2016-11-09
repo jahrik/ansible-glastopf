@@ -1,9 +1,9 @@
-#  ansible-glastopf
+##  ansible-glastopf
 
 Table of Contents
 =================
 
-   * [ansible-glastopf](#ansible-glastopf)
+      * [ansible-glastopf](#ansible-glastopf)
          * [Installation of glastopf for raspberry pi](#installation-of-glastopf-for-raspberry-pi)
          * [Install ansible](#install-ansible)
          * [Update the inventory.ini file with the master and client IP addresses](#update-the-inventoryini-file-with-the-master-and-client-ip-addresses)
