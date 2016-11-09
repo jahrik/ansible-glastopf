@@ -1,5 +1,9 @@
 #  ansible-glastopf
 
+Glastopf is a Python web application honeypot founded by Lukas Rist.
+
+[https://github.com/mushorg/glastopf](https://github.com/mushorg/glastopf)
+
 ## Table of Contents
 
    * [ansible-glastopf](#ansible-glastopf)
@@ -7,10 +11,6 @@
       * [Update the inventory.ini file with the master and client IP addresses](#update-the-inventoryini-file-with-the-master-and-client-ip-addresses)
       * [Raspberry Pi](#raspberry-pi)
       * [Vagrant lab](#vagrant-lab)
-
-[https://github.com/mushorg/glastopf](https://github.com/mushorg/glastopf)
-
-Glastopf is a Python web application honeypot founded by Lukas Rist.
 
 ## Install ansible
 
