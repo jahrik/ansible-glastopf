@@ -151,3 +151,5 @@
     shell: nohup /usr/bin/python /usr/local/bin/glastopf-runner &
     args:
       executable: /bin/bash
+      chdir: /opt/myhoneypot
+    poll: 0
