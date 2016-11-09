@@ -53,45 +53,8 @@
       - libxml2-dev
       - libxslt-dev
       - libmysqlclient-dev
-    when: ansible_distribution == 'Ubuntu'
-    tags:
-      - package
-
-
-  - name: install the dependencies
-    package: name={{item}} state=present
-    with_items:
-      - python
-      - python-openssl
-      - python-gevent
-      - libevent-dev
-      - python-dev
-      - python-dateutil
-      - python-mysqldb
-      - build-essential
-      - make
-      - python-argparse
-      - python-chardet
-      - python-requests
-      - python-sqlalchemy
-      - python-lxml
-      - python-beautifulsoup
-      - python-pip
-      - python-dev
-      - python-setuptools
-      - g++
-      - git
-      - php5-fpm
-      - php5-dev
-      - liblapack-dev
-      - gfortran
-      - cython
-      - libxml2-dev
-      - libxslt-dev
-      - libmysqlclient-dev
-    when: ansible_distribution == 'Debian'
-    tags:
-      - package
+    when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+    tags: [ "package" ]
 
   - name: install distrubute
     command: pip install --upgrade distribute
