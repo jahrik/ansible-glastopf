@@ -14,6 +14,7 @@ Glastopf is a Python web application honeypot founded by Lukas Rist.
       * [Raspberry Pi](#raspberry-pi)
       * [Vagrant lab](#vagrant-lab)
       * [EC2 instance](#ec2-instance)
+      * [Testing](#testing)
 
 ## Install ansible
 
@@ -63,4 +64,15 @@ export AWS_SECRET_ACCESS_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 ansible-playbook -i ec2.py setup_ec2.yml
 asnible-playbook -i ec2.py site.yml -u ubuntu
+```
+
+## Testing
+
+Where {{ IP_GOES_HERE }} == IP
+
+[http://{{ IP_GOES_HERE }}/INTERNAL_TEST/vuln.php=http://raw.githubusercontent.com/jahrik/ansible-glastopf/master/malicious-file.txt](http://{{ IP_GOES_HERE }}/INTERNAL_TEST/vuln.php=http://raw.githubusercontent.com/jahrik/ansible-glastopf/master/malicious-file.txt)
+
+```
+2016-11-10 11:17:48,658 (glastopf.glastopf) {{ IP_GOES_HERE }} requested GET /INTERNAL_TEST/vuln.php%3Dhttp://raw.githubusercontent.com/jahrik/ansible-glastopf/master/malicious-file.txt on {{ IP_GOES_HERE }}:80
+2016-11-10 11:17:48,791 (glastopf.sandbox.sandbox) File successfully parsed with sandbox.
 ```
