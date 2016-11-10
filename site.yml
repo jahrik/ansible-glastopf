@@ -14,7 +14,7 @@
     raw: "{{ item }}"
     with_items:
       - apt-get update
-      - apt-get install -y  python2.7
+      - "[ -e /usr/bin/python2.7 ] || apt-get install -y  python2.7"
       - "[ -e /usr/bin/python ] || ln -s /usr/bin/python2.7 /usr/bin/python"
     when:
       - issue.stdout.find('Ubuntu 16.04')
