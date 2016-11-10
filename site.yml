@@ -1,14 +1,14 @@
 ---
-- hosts: all
+- hosts: aws
   become: true
   become_method: sudo
   gather_facts: false
-  roles:
   tasks:
 
   - name:
     raw: apt-get update && apt-get install -y  python2.7
     tags: [ "aws" ]
+
 
 - hosts: all
   become: true
@@ -58,12 +58,14 @@
 
   - name: install distrubute
     command: pip install --upgrade distribute
+    tags: [ "pip","package" ]
 
   - name: Download BFR from github
     git:
       repo=git://github.com/mushorg/BFR.git
       dest=/opt/BFR
     register: bfr
+    tags: [ "git" ]
 
   - name: Make BFR
     shell: "{{item}}"
@@ -79,7 +81,7 @@
   - name: Find bfr.so path
     shell: updatedb && locate bfr.so | grep usr
     register: bfr_path
-    when: bfr.changed
+    # when: bfr.changed
 
   - name: Generate php.ini
     template:
@@ -88,13 +90,14 @@
       owner=root
       group=root
       mode=0600
-    when: bfr.changed
+    # when: bfr.changed
 
   - name: Download glastopf from github
     git:
       repo=https://github.com/mushorg/glastopf.git
       dest=/opt/glastopf
     register: glastopf
+    tags: [ "git" ]
 
   - name: Install glastopf
     shell: python setup.py install
@@ -107,6 +110,12 @@
       path=/opt/myhoneypot
       state=directory
       mode=0755
+
+  - name: Generate glastopf.cfg
+    template:
+      src=glastopf.cfg.j2
+      dest=/opt/myhoneypot/glastopf.cfg
+    tags: [ "config" ]
 
   - name: Start glastopf-runner (IGNORE ERRORS)
     become: false
