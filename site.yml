@@ -1,14 +1,17 @@
 ---
-- hosts: aws
+- hosts: all
   become: true
   become_method: sudo
   gather_facts: false
   tasks:
 
   - name:
-    raw: apt-get update && apt-get install -y  python2.7
+    raw: "{{ item }}"
+    with_items:
+      - apt-get update
+      - apt-get install -y  python2.7
+      - "[ -e /usr/bin/python ] || ln -s /usr/bin/python2.7 /usr/bin/python"
     tags: [ "aws" ]
-
 
 - hosts: all
   become: true
@@ -57,7 +60,7 @@
     tags: [ "package" ]
 
   - name: install distrubute
-    command: pip install --upgrade distribute
+    pip: name=distribute
     tags: [ "pip","package" ]
 
   - name: Download BFR from github

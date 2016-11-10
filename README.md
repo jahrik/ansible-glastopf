@@ -8,9 +8,10 @@ Glastopf is a Python web application honeypot founded by Lukas Rist.
 
    * [ansible-glastopf](#ansible-glastopf)
       * [Install ansible](#install-ansible)
-      * [Update the inventory.ini file with the master and client IP addresses](#update-the-inventoryini-file-with-the-master-and-client-ip-addresses)
+      * [Update the inventory.ini](#update-the-inventoryini)
       * [Raspberry Pi](#raspberry-pi)
       * [Vagrant lab](#vagrant-lab)
+      * [EC2 instance](#ec2-instance)
 
 ## Install ansible
 
@@ -25,7 +26,7 @@ sudo apt-get intsall python-pip
 sudo pip install ansible
 ```
 
-## Update the inventory.ini file with the master and client IP addresses
+## Update the inventory.ini
 
 ex:
 ```
@@ -34,9 +35,6 @@ pi ansible_host=192.168.1.100 ansible_user=pi
 
 [vagrant]
 vagrant ansible_host=127.0.0.1 ansible_port=2222 ansible_user=root
-
-[aws]
-ec2 ansible_host={{ ec2_public_ip }} ansible_user=ubuntu ansible_python_interpreter=/usr/bin/python2.7
 ```
 
 ## Raspberry Pi
@@ -50,4 +48,17 @@ ansible-playbook -l pi site.yml
 ```
 vagrant up
 ansible-playbook -l vagrant site.yml 
+```
+
+## EC2 instance
+
+```
+ssh-keygen ~/.ssh/glastopf_rsa
+ssh-add ~/.ssh/glastopf_rsa
+
+export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXX
+export AWS_SECRET_ACCESS_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+ansible-playbook -i ec2.py setup_ec2.yml
+asnible-playbook -i ec2.py site.yml -u ubuntu
 ```
