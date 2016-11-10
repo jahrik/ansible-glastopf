@@ -4,6 +4,8 @@ Glastopf is a Python web application honeypot founded by Lukas Rist.
 
 [https://github.com/mushorg/glastopf](https://github.com/mushorg/glastopf)
 
+[KYT-Glastopf-Final_v1.pdf](http://honeynet.org/sites/default/files/files/KYT-Glastopf-Final_v1.pdf)
+
 ## Table of Contents
 
    * [ansible-glastopf](#ansible-glastopf)

@@ -5,13 +5,20 @@
   gather_facts: false
   tasks:
 
+  - name: Check for Ubuntu 16.04
+    raw: cat /etc/issue
+    register: issue
+    tags: [ "python" ]
+
   - name:
     raw: "{{ item }}"
     with_items:
       - apt-get update
       - apt-get install -y  python2.7
       - "[ -e /usr/bin/python ] || ln -s /usr/bin/python2.7 /usr/bin/python"
-    tags: [ "aws" ]
+    when:
+      - issue.stdout.find('Ubuntu 16.04')
+    tags: [ "python" ]
 
 - hosts: all
   become: true
