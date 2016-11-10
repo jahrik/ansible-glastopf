@@ -1,0 +1,102 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+
+  - name: Provision VPC for glastopf
+    ec2_vpc:
+      state: present
+      cidr_block: "{{ glastopf_vpc_cidr_block }}"
+      resource_tags: { "Name":"{{ glastopf_vpc_name }}" }
+      region: "{{ aws_region }}"
+      internet_gateway: true
+      wait: yes
+    register: subnet 
+
+  - name: Debug - vpc_id
+    debug: var=subnet['vpc_id'] verbosity=2
+
+  - name: Create subnet for glastopf
+    ec2_vpc_subnet:
+      state: present
+      vpc_id: "{{ subnet['vpc_id'] }}"
+      region: "{{ aws_region }}"
+      cidr: "{{ glastopf_cidr }}"
+      resource_tags:
+        Name: "{{ glastopf_subnet_name }}"
+    register: glastopf_subnet
+
+  - name: Debug - subnet_id 
+    debug: var=glastopf_subnet['subnet']['id'] verbosity=2
+
+  - name: Configure public route table for VPC
+    ec2_vpc_route_table:
+      vpc_id: "{{ subnet['vpc_id'] }}"
+      region: "{{ aws_region }}"
+      tags:
+        Name: "{{ glastopf_route_table_name }}" 
+      subnets:
+        - "{{ glastopf_subnet['subnet']['id'] }}"
+      routes:
+        - dest: 0.0.0.0/0
+          gateway_id: "{{ subnet['igw_id'] }}"
+
+  - name: Lookup public ip on local machine
+    shell: "wget http://ipinfo.io/ip -qO -"
+    register: public_ip
+
+  - name: Debug - Your public IP will be set as the cidr_ip for port 22
+    debug: msg={{ public_ip.stdout }}
+
+  - name: Configure security group for server
+    ec2_group:
+      name: "{{ glastopf_security_group }}"
+      description: Security rules for CTF glastopf
+      vpc_id: "{{ subnet['vpc_id'] }}"
+      region: "{{ aws_region }}"
+      rules:
+        - proto: tcp
+          from_port: 22 
+          to_port:  22
+          cidr_ip: "{{ public_ip.stdout }}/32"
+        - proto: tcp
+          from_port: 80
+          to_port: 80
+          cidr_ip: 0.0.0.0/0
+
+  - name: Create key pair from local file
+    ec2_key:
+      name: "{{ glastopf_key_name }}"
+      key_material: "{{ item }}"
+      region: "{{ aws_region }}"
+    with_file: "{{ glastopf_key_path }}"
+
+  - name: Provision EC2 container instance for glastopf
+    ec2:
+      instance_type: "{{ glastopf_instance_type }}"
+      image: "{{ glastopf_ami_id }}"
+      key_name: "{{ glastopf_key_name }}"
+      wait: true
+      exact_count: 1
+      count_tag:
+        Name: "{{ glastopf_name }}"
+      instance_tags:
+        Name: "{{ glastopf_name }}"
+      vpc_subnet_id: "{{ glastopf_subnet['subnet']['id'] }}"
+      region: "{{ aws_region }}"
+      group: "{{ glastopf_security_group }}"
+    register: glastopf
+  
+  - name: Debug - glastopf instance_id
+    debug: var=glastopf['tagged_instances'][0]['id'] verbosity=2
+  
+  - name: Add Elastic IP to VPC for use with EC2 instance
+    ec2_eip:
+      device_id: "{{ glastopf['tagged_instances'][0]['id'] }}"
+      state: present
+      in_vpc: yes
+      region: "{{ aws_region }}"
+  
+  - name: Debug - Print all variables
+    debug: var=hostvars[inventory_hostname] verbosity=4
+
