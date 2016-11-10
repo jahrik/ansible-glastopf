@@ -1,0 +1,16 @@
+---
+# Global
+aws_region: "us-west-2"
+
+# us-west-2 Ubuntu 16.04
+glastopf_ami_id: "ami-a9d276c9"
+glastopf_vpc_name: "glastopf_vpc"
+glastopf_vpc_cidr_block: "172.18.0.0/16"
+glastopf_name: "glastopf"
+glastopf_instance_type: "t2.micro"
+glastopf_cidr: "172.18.42.0/24"
+glastopf_subnet_name: "glastopf_subnet"
+glastopf_route_table_name: "glastopf_route"
+glastopf_security_group: "glastopf_group"
+glastopf_key_name: "glastopf"
+glastopf_key_path: "~/.ssh/glastopf_rsa.pub"
